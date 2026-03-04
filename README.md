@@ -7,6 +7,9 @@
 ## Investor Intelligence API (Jerome)
 Stateless FastAPI service intended to be called from N8N workflows.
 
+### Delivery-agnostic principle
+This API returns **structured intelligence outputs** only. Delivery and formatting (HTML email, PDF reports, CRM writes, etc.) is handled downstream in N8N workflows per engagement/client.
+
 ### Requirements
 - Python 3.12+
 

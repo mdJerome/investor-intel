@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 
-def test_generate_digest_returns_html_and_payload(client) -> None:
+def test_generate_digest_returns_structured_payload_only(client) -> None:
     res = client.post(
         "/generate-digest",
         headers={"X-API-Key": "test-api-key"},
@@ -15,7 +15,7 @@ def test_generate_digest_returns_html_and_payload(client) -> None:
     assert res.status_code == 200
     body = res.json()
     assert body["success"] is True
-    assert body["data"]["html"].startswith("<!doctype html>")
     assert body["data"]["payload"]["subject"]
+    assert body["data"]["payload"]["preheader"]
     assert len(body["data"]["payload"]["sections"]) >= 1
     assert all("title" in s and "bullets" in s for s in body["data"]["payload"]["sections"])

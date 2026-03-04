@@ -37,5 +37,4 @@ class DigestPayload(BaseModel):
 
 class GenerateDigestResponse(BaseModel):
     schema_version: str = Field(default=DEFAULT_SCHEMA_VERSION, max_length=32)
-    html: str = Field(min_length=1, max_length=200000)
     payload: DigestPayload
