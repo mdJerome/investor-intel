@@ -19,6 +19,8 @@ class DigestService:
             week_start=req.week_start,
             week_end=req.week_end,
             signals=[(s.title, s.url) for s in req.signals],
+            investors=[(inv.name, inv.pipeline_status) for inv in req.investors],
+            market_context=req.market_context,
         )
 
         sections = [DigestSection(title=title, bullets=bullets) for (title, bullets) in llm_result.sections]

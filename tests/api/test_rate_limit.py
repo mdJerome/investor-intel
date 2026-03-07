@@ -9,7 +9,9 @@ from app.services.llm_client import LlmDigestResult, LlmInvestorScore, LlmSignal
 
 
 class _LocalFakeLlmClient:
-    async def score_investor(self, *, client_name: str, client_thesis: str, investor_name: str) -> LlmInvestorScore:
+    async def score_investor(
+        self, *, client_name: str, client_thesis: str, investor_name: str, investor_notes: str | None
+    ) -> LlmInvestorScore:
         return LlmInvestorScore(
             thesis_alignment=80,
             stage_fit=70,
@@ -30,7 +32,14 @@ class _LocalFakeLlmClient:
         )
 
     async def generate_digest(
-        self, *, client_name: str, week_start: str, week_end: str, signals: list[tuple[str, str]]
+        self,
+        *,
+        client_name: str,
+        week_start: str,
+        week_end: str,
+        signals: list[tuple[str, str]],
+        investors: list[tuple[str, str | None]],
+        market_context: str | None,
     ) -> LlmDigestResult:
         return LlmDigestResult(subject="x", preheader="y", sections=[("z", ["a"])])
 

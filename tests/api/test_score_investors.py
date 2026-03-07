@@ -26,7 +26,7 @@ def test_score_investors_returns_batch_results(client) -> None:
 
 def test_score_investors_penalizes_missing_evidence(monkeypatch) -> None:
     class _NoEvidenceLlm:
-        async def score_investor(self, *, client_name: str, client_thesis: str, investor_name: str) -> LlmInvestorScore:
+        async def score_investor(self, *, client_name: str, client_thesis: str, investor_name: str, investor_notes: str | None) -> LlmInvestorScore:
             return LlmInvestorScore(
                 thesis_alignment=80,
                 stage_fit=70,

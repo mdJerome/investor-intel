@@ -12,6 +12,7 @@ from starlette.exceptions import HTTPException as StarletteHTTPException
 from app.api.routers.analyze_signal import router as analyze_signal_router
 from app.api.routers.generate_digest import router as generate_digest_router
 from app.api.routers.health import router as health_router
+from app.api.routers.score_grants import router as score_grants_router
 from app.api.routers.score_investors import router as score_investors_router
 from app.config import get_settings
 from app.infra.logging import redact_headers
@@ -79,6 +80,7 @@ def create_app() -> FastAPI:
     app.include_router(score_investors_router)
     app.include_router(analyze_signal_router)
     app.include_router(generate_digest_router)
+    app.include_router(score_grants_router)
 
     return app
 

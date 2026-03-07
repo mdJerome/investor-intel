@@ -6,6 +6,7 @@ from app.config import Settings, get_settings
 from app.services.anthropic_client import AnthropicLlmClient
 from app.services.confidence import ConfidencePolicy
 from app.services.digest_service import DigestService
+from app.services.grant_scoring_service import GrantScoringService
 from app.services.scoring_service import ScoringService, ScoreWeights
 from app.services.signal_service import SignalService
 from app.services.llm_client import LlmClient
@@ -47,3 +48,7 @@ def get_signal_service(
 
 def get_digest_service(llm: LlmClient = Depends(get_llm_client)) -> DigestService:
     return DigestService(llm=llm)
+
+
+def get_grant_scoring_service(llm: LlmClient = Depends(get_llm_client)) -> GrantScoringService:
+    return GrantScoringService(llm=llm)

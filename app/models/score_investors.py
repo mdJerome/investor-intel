@@ -1,21 +1,34 @@
 from __future__ import annotations
 
+from typing import Literal
+
 from pydantic import BaseModel, Field
 
 from app.config import DEFAULT_SCHEMA_VERSION
 from app.models.common import Confidence
+
+PipelineStatus = Literal[
+    "uncontacted",
+    "outreach_sent",
+    "meeting_scheduled",
+    "active_dialogue",
+    "passed",
+    "committed",
+]
 
 
 class ClientProfile(BaseModel):
     name: str = Field(min_length=1, max_length=200)
     thesis: str = Field(min_length=1, max_length=4000)
     geography: str | None = Field(default=None, max_length=200)
+    competitor_watchlist: list[str] = Field(default_factory=list, max_length=10)
 
 
 class InvestorInput(BaseModel):
     name: str = Field(min_length=1, max_length=200)
     website: str | None = Field(default=None, max_length=500)
     notes: str | None = Field(default=None, max_length=2000)
+    pipeline_status: PipelineStatus | None = Field(default=None)
 
 
 class ScoreInvestorsRequest(BaseModel):

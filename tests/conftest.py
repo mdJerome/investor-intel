@@ -8,7 +8,7 @@ from fastapi.testclient import TestClient
 from app.config import get_settings
 from app.main import create_app
 from app.main_deps import get_llm_client
-from app.services.llm_client import LlmDigestResult, LlmInvestorScore, LlmSignalAnalysis
+from app.services.llm_client import LlmDigestResult, LlmGrantScore, LlmInvestorScore, LlmSignalAnalysis
 
 
 @pytest.fixture(autouse=True)
@@ -26,7 +26,14 @@ def _set_test_env(monkeypatch: pytest.MonkeyPatch) -> None:
 
 
 class _FakeLlmClient:
-    async def score_investor(self, *, client_name: str, client_thesis: str, investor_name: str) -> LlmInvestorScore:
+    async def score_investor(
+        self,
+        *,
+        client_name: str,
+        client_thesis: str,
+        investor_name: str,
+        investor_notes: str | None,
+    ) -> LlmInvestorScore:
         evidence = [f"https://example.com/{investor_name.replace(' ', '-').lower()}"]
         return LlmInvestorScore(
             thesis_alignment=80,
@@ -48,7 +55,14 @@ class _FakeLlmClient:
         )
 
     async def generate_digest(
-        self, *, client_name: str, week_start: str, week_end: str, signals: list[tuple[str, str]]
+        self,
+        *,
+        client_name: str,
+        week_start: str,
+        week_end: str,
+        signals: list[tuple[str, str]],
+        investors: list[tuple[str, str | None]],
+        market_context: str | None,
     ) -> LlmDigestResult:
         return LlmDigestResult(
             subject=f"Weekly Digest — {client_name}",
@@ -57,6 +71,34 @@ class _FakeLlmClient:
                 ("Market Pulse", ["Markets were active.", "Notable deals occurred."]),
                 ("Signals", [f"{t} ({u})" for (t, u) in signals[:5]]),
             ],
+        )
+
+    async def score_grant(
+        self,
+        *,
+        company_name: str,
+        therapeutic_area: str,
+        stage: str,
+        fda_pathway: str | None,
+        keywords: list[str],
+        grant_title: str,
+        grant_agency: str,
+        grant_program: str | None,
+        grant_description: str | None,
+        grant_eligibility: str | None,
+        grant_award_amount: str | None,
+        grant_deadline: str | None,
+    ) -> LlmGrantScore:
+        return LlmGrantScore(
+            overall_score=85,
+            therapeutic_match=90,
+            stage_eligibility=85,
+            award_size_relevance=80,
+            deadline_feasibility=88,
+            historical_funding=75,
+            rationale=f"Strong match for {company_name} in {therapeutic_area}.",
+            application_guidance="Reference recent funded projects in this space.",
+            confidence="high",
         )
 
 

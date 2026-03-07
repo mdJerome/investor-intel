@@ -45,6 +45,7 @@ class ScoringService:
                 client_name=req.client.name,
                 client_thesis=req.client.thesis,
                 investor_name=investor.name,
+                investor_notes=investor.notes,
             )
 
             breakdown = InvestorScoreBreakdown(
