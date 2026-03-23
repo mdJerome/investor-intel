@@ -27,6 +27,9 @@ Thumbs.db
 # Benchmark results (generated, not checked in)
 benchmarks/results/
 
+# Claude session artifacts (generated — use git log instead)
+.claude/docs/git-changelog.log
+
 # Utilities
 /docs/
 /rules/
